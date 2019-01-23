@@ -1,7 +1,13 @@
 This is a list of links to remember throughout the project.
 
 
-Ball Tracking with OpenCV - 
+OpenCV colour detection via HSV-
+https://www.bluetin.io/opencv/opencv-color-detection-filtering-python/
+
+OpenCV object detection-
+https://www.bluetin.io/opencv/object-detection-tracking-opencv-python/
+
+Ball Tracking with OpenCV -
 https://www.pyimagesearch.com/2015/09/14/ball-tracking-with-opencv/
 https://github.com/jrosebr1/imutils
 https://github.com/jrosebr1/imutils/blob/master/imutils/contours.py
