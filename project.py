@@ -1,6 +1,4 @@
 from __future__ import division
-from picamera.array import PiRGBArray
-from picamera import PiCamera
 import imutils
 from imutils.video import FPS
 from imutils.video import VideoStream
