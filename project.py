@@ -10,6 +10,16 @@ import cv2
 import numpy as np
 import time
 
+def hitTest(x1,y1,x2,y2,w1,h1,w2,h2):
+    if x1+w1 >= x2:
+        if y1+h1 >= y2:
+            
+
+            if x1 <= x2+w2:
+                if y1 <= y2+h2:
+                    return True
+    return False
+
 class WebcamVideoStream:
     def __init__(self, src=0):
         # initialize the video camera stream and read the first frame
@@ -30,8 +40,8 @@ FRAME_HEIGHT = 240
 # Initial HSV GUI slider values to load on program start.
 icol = (0, 0, 0, 255, 255, 255)
 # Set HSV values for blue folder.
-blueLower = (76, 56, 57)
-blueUpper = (106, 120, 215)
+blueLower = (85, 27, 135)
+blueUpper = (113, 169, 255)
 
 cv2.namedWindow('Tracking')
 # Lower range colour sliders.
@@ -114,10 +124,8 @@ while True:
     x2,y2,w2,h2 = cv2.boundingRect(biggest_contour2)
     surface = cv2.rectangle(frame2,(x2,y2),(x2+w2,y2+h2),(255,0,0),2)
     
-    
-    ##########################################################################################################################################################################
-    ##################################if surface.coordinates > tennisBall.coordinates:
-        #####################################tennisBall = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,0,255),2)
+    if hitTest(x,y,x2,y2,w,h,w2,h2) == True:
+        tennisBall = cv2.rectangle(frame,(x,y),(x+w,y+h),(0,0,255),2)
     
     # Show final output image
     cv2.imshow('Tracking', frame)
