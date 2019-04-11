@@ -1,4 +1,6 @@
 from __future__ import division
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import imutils
 from imutils.video import FPS
 from imutils.video import VideoStream
@@ -11,6 +13,8 @@ import time
 def hitTest(x1,y1,x2,y2,w1,h1,w2,h2):
     if x1+w1 >= x2:
         if y1+h1 >= y2:
+            
+
             if x1 <= x2+w2:
                 if y1 <= y2+h2:
                     return True
@@ -18,11 +22,13 @@ def hitTest(x1,y1,x2,y2,w1,h1,w2,h2):
 
 class WebcamVideoStream:
     def __init__(self, src=0):
-        # initialize the video camera stream and read the first frame from the stream
+        # initialize the video camera stream and read the first frame
+        # from the stream
         self.stream = cv2.VideoCapture(src)
         (self.grabbed, self.frame) = self.stream.read()
  
-        # initialize the variable used to indicate if the thread should be stopped
+        # initialize the variable used to indicate if the thread should
+        # be stopped
         self.stopped = False
 
 def nothing(*arg):
@@ -34,8 +40,8 @@ FRAME_HEIGHT = 240
 # Initial HSV GUI slider values to load on program start.
 icol = (0, 0, 0, 255, 255, 255)
 # Set HSV values for blue folder.
-blueLower = (85, 27, 135)
-blueUpper = (113, 169, 255)
+blueLower = (20, 0, 143)
+blueUpper = (170, 114, 255)
 
 cv2.namedWindow('Tracking')
 # Lower range colour sliders.
@@ -62,16 +68,15 @@ while True:
     highSat = cv2.getTrackbarPos('highSat', 'Tracking')
     highVal = cv2.getTrackbarPos('highVal', 'Tracking')
 
+
     # Get webcam frame
     _, frame = vidCapture.read()
-
-    # Show the original image.
-    cv2.imshow('frame', frame)
 
     # Convert the frame to HSV colour model.
     frameHSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # Repeated for second HSV frame.
     frame2HSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
     
     # HSV values to define a colour range we want to create a mask from.
     colorLow = np.array([lowHue,lowSat,lowVal])
@@ -84,15 +89,19 @@ while True:
     cv2.imshow('mask - tennis ball', mask)
     
     # resize the frame, blur it, and convert it to the HSV
+    # color space
     frame2 = imutils.resize(frame, width=320, height=240)
     blurred = cv2.GaussianBlur(frame2, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
-    # construct a mask for the color "green", then perform a series of dilations and erosions to remove any small blobs left in the mask
+    # construct a mask for the color "green", then perform
+    # a series of dilations and erosions to remove any small
+    # blobs left in the mask
     mask2 = cv2.inRange(hsv, blueLower, blueUpper)
     
     #show the second mask
-    cv2.imshow('mask-folder', mask2)
+    #cv2.imshow('mask-folder', mask2)
     
+
     #set up boundaries in order to find biggest contours and draw a box around them for tennis ball
     im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     #set up boundaries in order to find biggest contours and draw a box around them for surface
@@ -117,8 +126,6 @@ while True:
     
     # Show final output image
     cv2.imshow('Tracking', frame)
-    # Show surface being tracked
-    cv2.imshow('Tracking Surface', frame2)
     
     k = cv2.waitKey(5) & 0xFF
     if k == 27:
